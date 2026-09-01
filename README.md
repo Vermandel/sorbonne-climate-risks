@@ -28,8 +28,7 @@ available in `Syllabus_Risques_Climatiques.pdf`.
 Each session is available in two synchronised formats:
 
 - `SessionX_compact.pdf` is the student-facing reference version. The course
-  website links to this format; the legacy `SessionX.pdf` files remain compact
-  aliases so that existing links keep working.
+  website links directly to this format.
 - `SessionX_extended.pdf` is the presentation version. Its bullet points are
   revealed one at a time and the newly revealed point is highlighted.
 
