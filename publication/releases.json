@@ -1,0 +1,12 @@
+{
+  "timezone": "Europe/Paris",
+  "lead_minutes": 15,
+  "releases": [
+    {"id":"sorbonne-climate-risks-session-1","release_at":"2026-09-02T10:15:00+02:00","encrypted":"publication/encrypted/TP1_corrige.ipynb.gpg","target":"Session1/correction/TP1_corrige.ipynb"},
+    {"id":"sorbonne-climate-risks-session-2","release_at":"2026-09-02T12:30:00+02:00","encrypted":"publication/encrypted/TP2_corrige.ipynb.gpg","target":"Session2/correction/TP2_corrige.ipynb"},
+    {"id":"sorbonne-climate-risks-session-3-basics","release_at":"2026-09-09T10:15:00+02:00","encrypted":"publication/encrypted/TP3_basics_corrige.ipynb.gpg","target":"Session3/correction/TP3_basics_corrige.ipynb"},
+    {"id":"sorbonne-climate-risks-session-3","release_at":"2026-09-09T10:15:00+02:00","encrypted":"publication/encrypted/TP3_corrige.ipynb.gpg","target":"Session3/correction/TP3_corrige.ipynb"},
+    {"id":"sorbonne-climate-risks-session-4","release_at":"2026-09-09T12:30:00+02:00","encrypted":"publication/encrypted/TP4_corrige.ipynb.gpg","target":"Session4/correction/TP4_corrige.ipynb"},
+    {"id":"sorbonne-climate-risks-session-5","release_at":"2026-09-16T10:15:00+02:00","encrypted":"publication/encrypted/TP5_corrige.ipynb.gpg","target":"Session5/correction/TP5_corrige.ipynb"}
+  ]
+}

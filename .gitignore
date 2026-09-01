@@ -1,0 +1,35 @@
+# Environnement Python — stocker dans /home/vermandel/.venvs/SU_M2_Actuariat
+.venv/
+venv/
+env/
+
+# Caches Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Jupyter
+.ipynb_checkpoints/
+*_executed_temp.ipynb
+
+# Tests
+.pytest_cache/
+
+# LaTeX auxiliaires
+*.aux
+*.log
+*.out
+*.toc
+*.nav
+*.snm
+*.vrb
+*.synctex.gz
+*.synctex(busy)
+*.bbl
+*.blg
+*.fls
+*.fdb_latexmk
+
+# OS
+.DS_Store
+Thumbs.db
