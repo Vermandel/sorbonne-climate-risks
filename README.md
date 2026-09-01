@@ -23,6 +23,16 @@ This repository contains Gauthier Vermandel's transition-risk component: five tw
 The component syllabus, including the calendar and assessment format, is
 available in `Syllabus_Risques_Climatiques.pdf`.
 
+## Slide decks
+
+Each session is available in two synchronised formats:
+
+- `SessionX_compact.pdf` is the student-facing reference version. The course
+  website links to this format; the legacy `SessionX.pdf` files remain compact
+  aliases so that existing links keep working.
+- `SessionX_extended.pdf` is the presentation version. Its bullet points are
+  revealed one at a time and the newly revealed point is highlighted.
+
 ## Installation and practical sessions
 
 Python 3.12 and Jupyter are required. Create the environment locally, outside
