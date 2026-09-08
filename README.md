@@ -1,41 +1,47 @@
-# Climate Risks — Master's in Actuarial Science, Sorbonne University
+# Risques climatiques — Master 2 Actuariat, Sorbonne Université
 
-This repository contains Gauthier Vermandel's transition-risk component: five two-hour sessions. It develops the chain from climate policy and economic activity to emissions, temperature, firms, financial assets and insurance decisions.
+Ce dépôt contient le volet consacré au risque de transition de Gauthier Vermandel : cinq séances de deux heures. Il développe la chaîne qui relie les politiques climatiques et l'activité économique aux émissions, à la température, aux entreprises, aux actifs financiers et aux décisions d'assurance.
 
-## Learning objectives
+## Objectifs pédagogiques
 
-- Distinguish physical and transition climate risks, and locate this component within the full course.
-- Interpret scenarios as conditional pathways rather than forecasts or probabilities.
-- Work with a simplified climate model and the DICE integrated assessment model.
-- Compare mitigation pathways, quantify parameter uncertainty and discuss the social cost of carbon.
-- Discuss the implications and limits of model-based transition scenarios for actuarial and financial risk analysis.
+- Distinguer les risques climatiques physiques et de transition, et situer ce volet dans le cours complet.
+- Interpréter les scénarios comme des trajectoires conditionnelles plutôt que comme des prévisions ou des probabilités.
+- Utiliser un modèle climatique simplifié et le modèle intégré d'évaluation DICE.
+- Comparer des trajectoires d'atténuation, quantifier l'incertitude des paramètres et discuter le coût social du carbone.
+- Discuter les implications et les limites des scénarios de transition issus de modèles pour l'analyse des risques actuariels et financiers.
 
-## Course outline
+## Plan du cours
 
-1. Economic foundations of integrated assessment models.
-2. Emissions, concentrations and temperature.
-3. Climate scenarios and DICE.
-4. Parametric uncertainty.
-5. Optimal climate policy and the social cost of carbon.
+1. Fondements économiques des modèles intégrés d'évaluation.
+2. Émissions, concentrations et température.
+3. Scénarios climatiques et DICE.
+4. Incertitude paramétrique.
+5. Politique climatique optimale et coût social du carbone.
 
 ## Syllabus
 
-The component syllabus, including the calendar and assessment format, is
-available in `Syllabus_Risques_Climatiques.pdf`.
+Le syllabus du volet, incluant le calendrier et les modalités d'évaluation, est
+disponible dans `Syllabus_Risques_Climatiques.pdf`.
 
-## Slide decks
+## Diaporamas
 
-Each session is available in two synchronised formats:
+Chaque séance est disponible dans deux formats synchronisés :
 
-- `SessionX_compact.pdf` is the student-facing reference version. The course
-  website links directly to this format.
-- `SessionX_extended.pdf` is the presentation version. Its bullet points are
-  revealed one at a time and the newly revealed point is highlighted.
+- `SessionX_compact.pdf` est la version de référence destinée aux étudiant·es.
+  La page du cours renvoie directement vers ce format.
+- `SessionX_extended.pdf` est la version de présentation. Ses puces sont
+  révélées une à une et la puce nouvellement révélée est mise en évidence.
 
-## Installation and practical sessions
+- Séance 1 — [version compacte](Session1/Session1_compact.pdf) · [version étendue](Session1/Session1_extended.pdf)
+- Séance 2 — [version compacte](Session2/Session2_compact.pdf) · [version étendue](Session2/Session2_extended.pdf)
+- Séance 3 — [version compacte](Session3/Session3_compact.pdf) · [version étendue](Session3/Session3_extended.pdf)
+- Séance 4 — [version compacte](Session4/Session4_compact.pdf) · [version étendue](Session4/Session4_extended.pdf)
+- Séance 5 — [version compacte](Session5/Session5_compact.pdf) · [version étendue](Session5/Session5_extended.pdf)
 
-Python 3.12 and Jupyter are required. Create the environment locally, outside
-the Dropbox folder:
+## Installation et travaux pratiques
+
+Python 3.12 et Jupyter sont requis. Créez l'environnement localement, hors du
+dossier Dropbox :
 
 ```bash
 python3.12 -m venv ~/.venvs/su-risques-climatiques
@@ -44,54 +50,55 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-From the same project root, then run:
+Depuis cette même racine, lancez ensuite :
 
 ```bash
 jupyter notebook
 ```
 
-Open the exercise notebooks in `Session1/` through `Session5/`, in order.
-Solutions are published automatically fifteen minutes before the end of each
-session. Download each notebook together with the files located beside it:
+Ouvrez les sujets de TP de `Session1/` à `Session5/`, dans l'ordre. Les
+corrigés sont publiés automatiquement quinze minutes avant la fin de chaque
+séance. Téléchargez chaque notebook avec les fichiers placés à ses côtés :
 
-- `Session1/TP1_sujet.ipynb` uses `Session1/OptimalGrowth.py`;
-- `Session2/TP2_sujet.ipynb` uses `Session2/climate_models.py` and
+- `Session1/TP1_sujet.ipynb` utilise `Session1/OptimalGrowth.py` ;
+- `Session2/TP2_sujet.ipynb` utilise `Session2/climate_models.py` et
   `Session2/Notebook_ClimateModels_SSP_data.csv`;
-- `Session3/TP3_basics.ipynb` introduces DICE before the scenario exercises
-  in `Session3/TP3_sujet.ipynb`;
-- `Session4/TP4_sujet.ipynb` covers parametric uncertainty;
-- `Session5/TP5_sujet.ipynb` covers optimisation and the social cost of carbon,
-  with `Session5/TP5_bonus_sujet.ipynb` on discounting and tipping points;
-- for Sessions 3 through 5, `DICE.py` is located directly in each session
-  folder and must be downloaded with the notebook.
+- `Session3/TP3_basics.ipynb` introduit DICE avant les exercices de scénarios
+  de `Session3/TP3_sujet.ipynb` ;
+- `Session4/TP4_sujet.ipynb` traite de l'incertitude paramétrique ;
+- `Session5/TP5_sujet.ipynb` traite de l'optimisation et du coût social du
+  carbone, avec `Session5/TP5_bonus_sujet.ipynb` sur l'actualisation et les
+  points de bascule ;
+- pour les séances 3 à 5, `DICE.py` se trouve directement dans chaque dossier
+  de séance et doit être téléchargé avec le notebook.
 
-Other shared data are kept in `data/`.
+Les autres données communes sont conservées dans `data/`.
 
-Never create, commit, or synchronise a virtual environment in this teaching
-repository: `.venv/`, `venv/`, and `env/` are excluded by `.gitignore`.
+Ne créez, ne versionnez et ne synchronisez jamais d'environnement virtuel dans
+ce dépôt pédagogique : `.venv/`, `venv/` et `env/` sont exclus par `.gitignore`.
 
-## Scheduled solution publication (PSC)
+## Publication synchronisée des corrigés (PSC)
 
-The PSC procedure stores each forthcoming solution in encrypted form, then a
-GitHub Action decrypts and publishes it at the time specified in
-`publication/releases.json`. It runs every five minutes and can also be started
-manually from the Actions tab.
+La procédure PSC conserve chaque futur corrigé sous forme chiffrée, puis une
+GitHub Action le déchiffre et le publie à la date indiquée dans
+`publication/releases.json`. Elle s'exécute toutes les cinq minutes et peut
+aussi être lancée manuellement depuis l'onglet Actions.
 
-To prepare a solution for another course:
+Pour préparer un corrigé d'un autre cours :
 
-1. encrypt it with
+1. le chiffrer avec
    `scripts/prepare_correction.sh path/to/solution.ipynb publication/encrypted/solution.ipynb.gpg`;
-2. add its identifier, timezone-aware ISO-8601 release time, encrypted path,
-   and public target path to the manifest;
-3. commit only the `.gpg` archive, the manifest, and the course webpage —
-   never the plaintext solution before its release time;
-4. give the website button the `psc-correction` class and a `data-release-at`
-   attribute containing exactly the same time.
+2. ajouter au manifeste son identifiant, son heure ISO-8601 avec fuseau, le
+   chemin chiffré et le chemin public cible ;
+3. versionner uniquement l'archive `.gpg`, le manifeste et la page du cours —
+   jamais le corrigé en clair avant l'échéance ;
+4. donner au bouton du site la classe `psc-correction` et un attribut
+   `data-release-at` contenant exactement la même heure.
 
-The public key `publication/psc-public-key.asc` is used to prepare the
-archives. The private key is held only in the GitHub secret `PSC_PRIVATE_KEY`.
+La clé publique `publication/psc-public-key.asc` sert à préparer les archives.
+La clé privée n'est présente que dans le secret GitHub `PSC_PRIVATE_KEY`.
 
-## References
+## Références
 
 - GIEC (2021), *AR6 Working Group I*.
 - GIEC (2023), *AR6 Synthesis Report*.
