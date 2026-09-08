@@ -72,12 +72,12 @@ class Params:
     # Numerical options
     s_lower  : float = 0.0       # Lower bound on saving rate
     s_upper  : float = 1.0       # Upper bound on saving rate
-    tolx     : float = 1e-10      # tolerance on argument 
+    tolx     : float = 1e-10      # tolerance on argument
     toly     : float = 1e-3      # tolerance on objective
-       
+
     # Variable names
     col = ['time', 'A', 's', 'Y',  'Q', 'C', 'K','L','sigma', 'theta1','mu','E','F','T_AT','T_LO','E_land','F_EX','M_AT','M_UP','M_LO','Tax']
-    
+
     # additional definition
     def __post_init__(self):
         self.nT = (self.tT + self.Delta - self.t0)//self.Delta
@@ -133,13 +133,13 @@ def mat_to_df(mat,p: Params) -> pd.DataFrame:
     return df
 
 
-def obj_fun( x: np.ndarray, sim: np.ndarray, timevec: np.ndarray, p: Params, control_id) -> float: 
+def obj_fun( x: np.ndarray, sim: np.ndarray, timevec: np.ndarray, p: Params, control_id) -> float:
     """
     Objective function (to MINIMIZE) for the planner problem.
    """
-   
+
     # Control reshaped (N*T)x1 into a matrix TxN
-    nT = len(timevec)   
+    nT = len(timevec)
     x_matrix = np.column_stack([x[i*nT:(i+1)*nT] for i in range(len(control_id))])
     # Feed into current simulations
     work = sim.copy()  # éviter l’effet de bord
@@ -147,7 +147,7 @@ def obj_fun( x: np.ndarray, sim: np.ndarray, timevec: np.ndarray, p: Params, con
     # update path
     work = update_path(work,timevec,p)
 
-    
+
     # calculate welfare
     eps   = 1e-12  # pour éviter divisions/log(0)
     disc  = (1.0/(1.0 + p.rho)) ** (np.arange(len(timevec)) * p.Delta)
@@ -156,17 +156,17 @@ def obj_fun( x: np.ndarray, sim: np.ndarray, timevec: np.ndarray, p: Params, con
     util  = L_lag * ( (np.power(np.maximum(1000.0*C /L_lag, eps), 1.0 - p.gamma) - 1.0) / (1.0 - p.gamma) )
     W     = - np.sum(disc * util)
     return W
-    
+
 def run_optimal_policy( sim: np.ndarray, timevec: np.ndarray, p: Params,the_bounds: np.ndarray, control_id: np.ndarray) -> np.ndarray:
-    
+
     # Ensure control_id is a list
     if isinstance(control_id, int):
         control_id = [control_id]
-    
+
     # Ensure the_bounds is also a list of tuples
     if isinstance(the_bounds, tuple):
         the_bounds = [the_bounds]
-        
+
     # determine the size of the window for the social planner
     disc = 1
     Tplanner = 1
@@ -180,17 +180,17 @@ def run_optimal_policy( sim: np.ndarray, timevec: np.ndarray, p: Params,the_boun
     for k, v in p.__dict__.items():
         setattr(popt, k, v)
     # extend the horizon
-    popt.nT = p.nT + Tplanner 
+    popt.nT = p.nT + Tplanner
     # initialize a new path with correct exogenous values
     path_opt = init_states(popt)
      # copy back the endogenous history you already simulated
-    path_opt[:p.nT, :] = sim   
+    path_opt[:p.nT, :] = sim
 
     # bounds : même ordre que x0
     bounds = []
     for ci, bnd in zip(control_id, the_bounds):
         bounds.extend([bnd] * Tplanner)
-    
+
     for ix in trange(1, p.nT, desc="Optimizing"):
 
         idx = ix + np.arange(0, Tplanner)
@@ -199,15 +199,15 @@ def run_optimal_policy( sim: np.ndarray, timevec: np.ndarray, p: Params,the_boun
         if len(control_id) == 1:
             path_opt[idx,control_id]    = res.x
         else:
-            nT = len(idx) 
+            nT = len(idx)
             x_matrix = np.column_stack([res.x[i*nT:(i+1)*nT] for i in range(len(control_id))])
             path_opt[np.ix_(idx,control_id)]    = x_matrix
         # updating variables based on new control
         path_opt = update_path(path_opt,idx,p)
-    
+
     # Remove last Tplanner rows
     path_opt = path_opt[:-Tplanner, :]
-    
+
     return path_opt
 
 
@@ -223,7 +223,7 @@ def update_path_numba(sim,
                       # column indices (ints)
                       i_A, i_L, i_theta1, i_mu, i_s, i_sigma, i_E_land, i_F_EX,
                       i_Y, i_Q, i_C, i_K, i_E, i_Tax,
-                      i_F, i_M_AT, i_M_UP, i_M_LO, i_T_AT, i_T_LO, 
+                      i_F, i_M_AT, i_M_UP, i_M_LO, i_T_AT, i_T_LO,
                       # scalars (float64)
                       Delta, alpha, a2, a3, a4, a5, a6, theta2, deltaK, xi, F2XCO2, T2XCO2,
                       b12, b23, c1, c3, c4,
@@ -234,7 +234,7 @@ def update_path_numba(sim,
     """
     ln2 = np.log(2.0)
     k_decay = (1.0 - deltaK)**Delta
-    
+
     verbo = 0
     for t in range(t_start, t_end):
         # --- Economic block ---
@@ -243,44 +243,44 @@ def update_path_numba(sim,
         A_t = sim[t, i_A]
         Y_t = A_t * (sim[t-1, i_K] ** alpha) * ((L_t / 1000.0) ** (1.0 - alpha))
         sim[t, i_Y] = Y_t
-        if verbo : print("t =", t, "Y_t =", Y_t) 
-        
+        if verbo : print("t =", t, "Y_t =", Y_t)
+
         # damages: a2 * T_AT^(a3)  (DICE-style)
         T_tm1 = sim[t-1, i_T_AT]
         damages = a2 * (T_tm1 ** a3)
         # threshold-activated term
         if T_tm1 >  a6:
             damages += a4 * (T_tm1 ** a5)
-        if verbo : print("t =", t, "damages =", damages) 
+        if verbo : print("t =", t, "damages =", damages)
 
         # Q = Δ * [1 − θ1 * μ^θ2] / [1 + damages] * Y
         mu_t = sim[t, i_mu]
         theta1_t = sim[t, i_theta1]
         Q_t = Delta * (1.0 - theta1_t * (mu_t ** theta2)) / (1.0 + damages) * Y_t
         sim[t, i_Q] = Q_t
-        if verbo : print("t =", t, "Q_t =", Q_t) 
-        
+        if verbo : print("t =", t, "Q_t =", Q_t)
+
         # C(t) = (1 − s) * Q
         s_t = sim[t, i_s]
         C_t = (1.0 - s_t) * Q_t
         sim[t, i_C] = C_t
-        if verbo : print("t =", t, "C_t =", C_t) 
-        
-  
-        
+        if verbo : print("t =", t, "C_t =", C_t)
+
+
+
         # K(t) = (1 − δ_K)^(Δ) * K(t−1) + s * Q
         K_t = k_decay * sim[t-1, i_K] + s_t * Q_t
         sim[t, i_K] = K_t
-        if verbo : print("t =", t, "K_t =", K_t) 
-        
+        if verbo : print("t =", t, "K_t =", K_t)
+
         # E(t) = Δ * [ σ(t) * (1 − μ) * Y(t) + E_land(t) ]
         sigma_t = sim[t, i_sigma]
         Eland_t = sim[t, i_E_land]
         E_t     = Delta * (sigma_t * (1.0 - mu_t) * Y_t + Eland_t)
         sim[t, i_E] = E_t
-        if verbo : print("t =", t, "E_t =", E_t) 
-        
-        
+        if verbo : print("t =", t, "E_t =", E_t)
+
+
         # Carbon tax: 1000*xi*theta2*theta1/sigma * mu^(theta2-1)
         # (protect against division by ~0)
         denom = sim[t, i_sigma]
@@ -305,7 +305,7 @@ def update_path_numba(sim,
         MAT_t = (1.0 - Delta * b12) * MAT_tm1 + Delta * b12 * (mat / mup) * MUP_tm1 + xi * E_t
         # M_UP(t) = Δ·b₁₂·M_AT(t−1) + (1 − Δ·b₁₂·(M_AT₀ / M_UP₀) − Δ·b₂₃)·M_UP(t−1) + Δ·b₂₃·(M_UP₀ / M_LO₀)·M_LO(t−1)
         MUP_t = Delta * b12 * MAT_tm1 + (1.0 - Delta * b12 * (mat / mup) - Delta * b23) * MUP_tm1 + Delta * b23 * (mup / mlo) * MLO_tm1
-        # M_LO(t) = Δ·b₂₃·M_UP(t−1) + (1 − Δ·b₂₃·(M_UP₀ / M_LO₀))·M_LO(t−1) 
+        # M_LO(t) = Δ·b₂₃·M_UP(t−1) + (1 − Δ·b₂₃·(M_UP₀ / M_LO₀))·M_LO(t−1)
         MLO_t = Delta * b23 * MUP_tm1 + (1.0 - Delta * b23 * (mup / mlo)) * MLO_tm1
         sim[t, i_M_AT] = MAT_t
         sim[t, i_M_UP] = MUP_t
@@ -349,21 +349,21 @@ def update_path(sim: np.ndarray, timevec: np.ndarray, p) -> np.ndarray:
 
 
 if __name__ == "__main__":
-    
+
 
     p = Params()
-    
+
     path = init_states(p)
     timevec = range(1,p.nT)
     path[0:,p.i_mu] = 0.03
     path = update_path(path,timevec,p)
 
     # Compute welfare on some saving rates
-    s0    = np.zeros(p.nT-1)+.2  
+    s0    = np.zeros(p.nT-1)+.2
     a     = obj_fun(s0, path, timevec, p, [p.i_s])
-    s0    = np.zeros(p.nT-1)+.25 
+    s0    = np.zeros(p.nT-1)+.25
     b     = obj_fun(s0, path, timevec, p, [p.i_s])
-    
+
 
     # Laissez-faire
     # setting optimization
@@ -374,32 +374,32 @@ if __name__ == "__main__":
 
     # Business-as-usual
     # setting optimization
-    print('Compute Optimal tax: two controls')
+    print('Calcul de la taxe optimale : deux commandes')
     the_bounds   = [(p.s_lower, p.s_upper),(0, 1)];
     control_id   = [p.i_s,p.i_mu];
     path_opt_smu = run_optimal_policy(path, timevec, p, the_bounds, control_id);
 
- 
+
     # plotting main figure
     fig, axes = plt.subplots(1, 2, figsize=(12, 5))
     # --- Subplot 1: Saving rate ---
-    axes[0].plot(path_opt_smu[:, p.i_time], path_opt_smu[:, p.i_s], 
-                 label="Optimal transition", color="green", linewidth=2)
-    axes[0].plot(path_opt_s[:, p.i_time], path_opt_s[:, p.i_s], 
-                 label="No transition", color="red", linestyle="--", linewidth=2)
-    axes[0].set_xlabel("Time")
-    axes[0].set_ylabel("Saving rate")
-    axes[0].set_title("Control 1: Saving rate dynamics")
+    axes[0].plot(path_opt_smu[:, p.i_time], path_opt_smu[:, p.i_s],
+                 label="Transition optimale", color="green", linewidth=2)
+    axes[0].plot(path_opt_s[:, p.i_time], path_opt_s[:, p.i_s],
+                 label="Sans transition", color="red", linestyle="--", linewidth=2)
+    axes[0].set_xlabel("Année")
+    axes[0].set_ylabel("Taux d’épargne")
+    axes[0].set_title("Commande 1 : dynamique du taux d’épargne")
     axes[0].legend()
     axes[0].grid(True)
     # --- Subplot 2: CO2 Reduction rate ---
-    axes[1].plot(path_opt_smu[:, p.i_time], path_opt_smu[:, p.i_mu], 
-                 label="Optimal transition", color="green", linewidth=2)
-    axes[1].plot(path_opt_s[:, p.i_time], path_opt_s[:, p.i_mu], 
-                 label="No transition", color="red", linestyle="--", linewidth=2)
-    axes[1].set_xlabel("Time")
-    axes[1].set_ylabel("CO2 Reduction rate")
-    axes[1].set_title("Control 2: Abatement rate")
+    axes[1].plot(path_opt_smu[:, p.i_time], path_opt_smu[:, p.i_mu],
+                 label="Transition optimale", color="green", linewidth=2)
+    axes[1].plot(path_opt_s[:, p.i_time], path_opt_s[:, p.i_mu],
+                 label="Sans transition", color="red", linestyle="--", linewidth=2)
+    axes[1].set_xlabel("Année")
+    axes[1].set_ylabel("Taux de réduction du CO2")
+    axes[1].set_title("Commande 2 : taux de réduction")
     axes[1].legend()
     axes[1].grid(True)
     plt.tight_layout()
@@ -414,7 +414,7 @@ if __name__ == "__main__":
     def my_damage(T, p: Params):
         return 0.003 * (np.asarray(T)**2)
 
-    
+
     # Exemple d’usage dans le notebook :
     p.user_damage_fn = my_damage
     control_id   = [p.i_s,p.i_mu];
@@ -423,20 +423,20 @@ if __name__ == "__main__":
 
     # (1) Trajectories
     fig, axes = plt.subplots(1, 2, figsize=(12, 5))
-    axes[0].plot(path_opt_smu[:, p.i_time], path_opt_smu_damages[:, p.i_mu], label="Higher damages (optimal policy)", linewidth=2)
-    axes[0].plot(path_opt_smu[:, p.i_time], path_opt_smu[:, p.i_mu], label="Baseline damages (optimal policy)", linestyle="--", linewidth=2)
-    axes[0].set_xlabel("Time")
-    axes[0].set_ylabel("Abatement rate μ")
-    axes[0].set_title("Optimal abatement rate μ")
+    axes[0].plot(path_opt_smu[:, p.i_time], path_opt_smu_damages[:, p.i_mu], label="Dommages élevés (politique optimale)", linewidth=2)
+    axes[0].plot(path_opt_smu[:, p.i_time], path_opt_smu[:, p.i_mu], label="Dommages de référence (politique optimale)", linestyle="--", linewidth=2)
+    axes[0].set_xlabel("Année")
+    axes[0].set_ylabel("Taux de réduction μ")
+    axes[0].set_title("Taux de réduction optimal μ")
     axes[0].legend()
     axes[0].grid(True)
     # (1) Trajectories
-    axes[1].plot(path_opt_smu[:, p.i_time], path_opt_smu_damages[:, p.i_Tax], label="Higher damages (optimal policy)", linewidth=2)
-    axes[1].plot(path_opt_smu[:, p.i_time], path_opt_smu[:, p.i_Tax], label="Baseline damages (optimal policy)", linestyle="--", linewidth=2)
-    axes[1].set_xlabel("Time")
-    axes[1].set_ylabel("Abatement rate μ")
-    axes[1].set_title("Optimal abatement rate μ")
+    axes[1].plot(path_opt_smu[:, p.i_time], path_opt_smu_damages[:, p.i_Tax], label="Dommages élevés (politique optimale)", linewidth=2)
+    axes[1].plot(path_opt_smu[:, p.i_time], path_opt_smu[:, p.i_Tax], label="Dommages de référence (politique optimale)", linestyle="--", linewidth=2)
+    axes[1].set_xlabel("Année")
+    axes[1].set_ylabel("Taux de réduction μ")
+    axes[1].set_title("Taux de réduction optimal μ")
     axes[1].legend()
     axes[1].grid(
     True)
-    
+
