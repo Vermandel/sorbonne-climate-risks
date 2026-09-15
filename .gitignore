@@ -12,6 +12,16 @@ __pycache__/
 .ipynb_checkpoints/
 *_executed_temp.ipynb
 
+# Matériel enseignant : les corrigés ne sont publiés qu'après la fin du cours.
+Session*/correction/
+*_corrige.ipynb
+
+# Sources LaTeX : le dépôt public ne contient que les PDF rendus.
+*.tex
+*.sty
+*.cls
+*.bib
+
 # Tests
 .pytest_cache/
 
