@@ -16,6 +16,10 @@ __pycache__/
 Session*/correction/
 *_corrige.ipynb
 
+# Publication anticipée explicitement autorisée le 16 septembre 2026.
+!Session5/correction/
+!Session5/correction/TP5_corrige.ipynb
+
 # Sources LaTeX : le dépôt public ne contient que les PDF rendus.
 *.tex
 *.sty

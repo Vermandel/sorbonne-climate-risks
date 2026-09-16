@@ -69,6 +69,8 @@ séance. Téléchargez chaque notebook avec les fichiers placés à ses côtés 
 - `Session5/TP5_sujet.ipynb` traite de l'optimisation et du coût social du
   carbone, avec `Session5/TP5_bonus_sujet.ipynb` sur l'actualisation et les
   points de bascule ;
+- le [corrigé du TP5](Session5/correction/TP5_corrige.ipynb) est disponible
+  avec les sorties de l'optimisation DICE ;
 - pour les séances 3 à 5, `DICE.py` se trouve directement dans chaque dossier
   de séance et doit être téléchargé avec le notebook.
 
