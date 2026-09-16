@@ -27,16 +27,16 @@ disponible dans `Syllabus_Risques_Climatiques.pdf`.
 
 Chaque séance est disponible dans deux formats synchronisés :
 
-- `SessionX_compact.pdf` est la version de référence destinée aux étudiant·es.
+- `slides/SessionX_compact.pdf` est la version de référence destinée aux étudiant·es.
   La page du cours renvoie directement vers ce format.
-- `SessionX_extended.pdf` est la version de présentation. Ses puces sont
+- `slides/SessionX_extended.pdf` est la version de présentation. Ses puces sont
   révélées une à une et la puce nouvellement révélée est mise en évidence.
 
-- Séance 1 — [version compacte](Session1/Session1_compact.pdf) · [version étendue](Session1/Session1_extended.pdf)
-- Séance 2 — [version compacte](Session2/Session2_compact.pdf) · [version étendue](Session2/Session2_extended.pdf)
-- Séance 3 — [version compacte](Session3/Session3_compact.pdf) · [version étendue](Session3/Session3_extended.pdf)
-- Séance 4 — [version compacte](Session4/Session4_compact.pdf) · [version étendue](Session4/Session4_extended.pdf)
-- Séance 5 — [version compacte](Session5/Session5_compact.pdf) · [version étendue](Session5/Session5_extended.pdf)
+- Séance 1 — [version compacte](Session1/slides/Session1_compact.pdf) · [version étendue](Session1/slides/Session1_extended.pdf)
+- Séance 2 — [version compacte](Session2/slides/Session2_compact.pdf) · [version étendue](Session2/slides/Session2_extended.pdf)
+- Séance 3 — [version compacte](Session3/slides/Session3_compact.pdf) · [version étendue](Session3/slides/Session3_extended.pdf)
+- Séance 4 — [version compacte](Session4/slides/Session4_compact.pdf) · [version étendue](Session4/slides/Session4_extended.pdf)
+- Séance 5 — [version compacte](Session5/slides/Session5_compact.pdf) · [version étendue](Session5/slides/Session5_extended.pdf)
 
 ## Installation et travaux pratiques
 
@@ -56,25 +56,17 @@ Depuis cette même racine, lancez ensuite :
 jupyter notebook
 ```
 
-Ouvrez les sujets de TP de `Session1/` à `Session5/`, dans l'ordre. Les
-corrigés sont publiés automatiquement quinze minutes avant la fin de chaque
-séance. Téléchargez chaque notebook avec les fichiers placés à ses côtés :
+Ouvrez les sujets de TP dans `Session1/codes/` à `Session5/codes/`, dans
+l'ordre. Chaque séance est autonome :
 
-- `Session1/TP1_sujet.ipynb` utilise `Session1/OptimalGrowth.py` ;
-- `Session2/TP2_sujet.ipynb` utilise `Session2/climate_models.py` et
-  `Session2/Notebook_ClimateModels_SSP_data.csv`;
-- `Session3/TP3_basics.ipynb` introduit DICE avant les exercices de scénarios
-  de `Session3/TP3_sujet.ipynb` ;
-- `Session4/TP4_sujet.ipynb` traite de l'incertitude paramétrique ;
-- `Session5/TP5_sujet.ipynb` traite de l'optimisation et du coût social du
-  carbone, avec `Session5/TP5_bonus_sujet.ipynb` sur l'actualisation et les
-  points de bascule ;
-- le [corrigé du TP5](Session5/correction/TP5_corrige.ipynb) est disponible
-  avec les sorties de l'optimisation DICE ;
-- pour les séances 3 à 5, `DICE.py` se trouve directement dans chaque dossier
-  de séance et doit être téléchargé avec le notebook.
+- `TPX_sujet.ipynb` est le sujet ;
+- `correction/TPX_corrige.ipynb` est le corrigé publié lorsque l'embargo est
+  levé ;
+- `toolbox/` contient les modules Python développés pour le cours ;
+- `data/` contient les données CSV nécessaires.
 
-Les autres données communes sont conservées dans `data/`.
+Le préambule commun aux notebooks installe uniquement les paquets pip absents,
+puis vérifie les fichiers locaux. Il ne télécharge pas de module de cours.
 
 Ne créez, ne versionnez et ne synchronisez jamais d'environnement virtuel dans
 ce dépôt pédagogique : `.venv/`, `venv/` et `env/` sont exclus par `.gitignore`.
